@@ -1,0 +1,13 @@
+﻿Installing assembly 'C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.InstallLog
+   assemblypath = C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.exe
+Installing service Service1...
+Service Service1 has been successfully installed.
+Creating EventLog source Service1 in log Application...
+Committing assembly 'C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.InstallLog
+   assemblypath = C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.exe
