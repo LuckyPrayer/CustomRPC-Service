@@ -1,0 +1,10 @@
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.exe.config
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.exe
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\bin\Debug\CustomRPC-Service.pdb
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC-Service.csproj.AssemblyReference.cache
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC-Service.csproj.SuggestedBindingRedirects.cache
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC_Service.ProjectInstaller.resources
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC-Service.csproj.GenerateResource.cache
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC-Service.csproj.CoreCompileInputs.cache
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC-Service.exe
+C:\Users\LuckyPrayer\source\repos\CustomRPC-Service\CustomRPC-Service\obj\Debug\CustomRPC-Service.pdb
