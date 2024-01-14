@@ -14,6 +14,9 @@ using System.Threading;
 using System.Timers;
 using System.IO;
 using System.Windows.Forms;
+using System.IO.Ports;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Net.NetworkInformation;
 
 
 namespace CustomRPC_Service
@@ -23,75 +26,139 @@ namespace CustomRPC_Service
         const string CLIENT_ID = "1115004659384471714";
         static Discord.Discord discord;
 
-        static Discord.Activity activity;
+        Discord.Activity activity;
         private static System.Timers.Timer timer = new System.Timers.Timer();
-
-        public void WriteToFile(string Message)
+        string configPath = AppDomain.CurrentDomain.BaseDirectory;
+        string logPath = @"C:\Logs\CustomRPC";
+        public void WriteToLog(string Message)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
-
-            if (!Directory.Exists(path))
+            
+            if (!Directory.Exists(logPath))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(logPath);
             }
-            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
-            if (!File.Exists(filepath))
+            string logFilePath = logPath + @"\ServiceLog_" + DateTime.Now.Date.ToShortDateString().Replace('/', '_') + ".txt";
+            if (!File.Exists(logFilePath))
             {
-                using (StreamWriter sw = File.CreateText(filepath))
+                using (StreamWriter sw = File.CreateText(logFilePath))
                 {
                     sw.WriteLine(Message);
                 }
             }
             else
             {
-                using (StreamWriter sw = File.AppendText(filepath))
+                using (StreamWriter sw = File.AppendText(logFilePath))
                 {
                     sw.WriteLine(Message);
                 }
             }
 
         }
+        public void CreateConfig()
+        {
+            //string path = AppDomain.CurrentDomain.BaseDirectory + "\\Config";
+            
+            if (!Directory.Exists(configPath))
+            {
+                Directory.CreateDirectory(configPath);
+            }
+            string configFilePath = configPath + @"\config.txt";
+            using (StreamWriter sw = File.CreateText(configFilePath))
+            {
+                sw.WriteLine("Hardly working"); //Details
+                sw.WriteLine("Hard at work"); //
+                sw.WriteLine("1"); //Timestamps Start
+                sw.WriteLine("1"); //Timestamps End
+                sw.WriteLine("typing"); //Assets LargeImage
+                sw.WriteLine("Work"); //Assets 
+                sw.WriteLine("certified"); //Assets 
+                sw.WriteLine("Certified Hard Worker"); //Assets 
+                sw.WriteLine("00"); //Party ID 
+                sw.WriteLine("0"); //Party Size
+                sw.WriteLine("0"); //Party Max Size
+      
+            }
+        }
+
+        public void ReadConfig()
+        {
+
+            string configFilePath = configPath + @"config.txt";
+            //Check if config file exists
+            if (!File.Exists(configFilePath))
+            {
+                //Create config file
+                CreateConfig();
+            }
+
+            StreamReader reader = new StreamReader(configFilePath);
+
+            string actState = reader.ReadLine();
+            string actDetails = reader.ReadLine();
+            string timestampStart = reader.ReadLine();
+            string timestampEnd = reader.ReadLine();
+            string actLargeImage = reader.ReadLine();
+            string actLargeText = reader.ReadLine();
+            string actSmallImage = reader.ReadLine();
+            string actSmallText = reader.ReadLine();
+            string actID = reader.ReadLine();
+            Int32 actCurrentSize = Convert.ToInt32(reader.ReadLine());
+            Int32 actMaxSize = Convert.ToInt32(reader.ReadLine());
+
+            activity = new Discord.Activity
+            {
+                State = actState,
+                Details = actDetails,
+                Timestamps =
+                    {
+                        Start = Convert.ToInt32(timestampStart),
+                        End = Convert.ToInt32(timestampEnd),
+                    },
+                Assets =
+                    {
+                        LargeImage = actLargeImage, // Larger Image Asset Value
+                        LargeText = actLargeText, // Large Image Tooltip
+                        SmallImage = actSmallImage, // Small Image Asset Value
+                        SmallText = actSmallText, // Small Image Tooltip
+                    },
+                Party =
+                    {
+                        Id = actID,
+                        Size =
+                        {
+                            CurrentSize = actCurrentSize,
+                            MaxSize = actMaxSize,
+                        },
+                    },
+            };
+            reader.Close();
+
+        }
 
         public CustomRPC()
         {
             InitializeComponent();
+            discord = new Discord.Discord(Int64.Parse(CLIENT_ID), (UInt64)Discord.CreateFlags.NoRequireDiscord);
+
+            WriteToLog("Process initalized at " + DateTime.Now.ToString());
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            timer.Interval = 5000;
+            timer.Interval = 3000;
             timer.Enabled = true;
         }
         private void OnElapsedTime(object source, ElapsedEventArgs e)
         {
-            WriteToFile("Process recalled at " + DateTime.Now.ToString());
+            WriteToLog("Process recalled at " + DateTime.Now.ToString());
             discord.RunCallbacks();
         }
         protected override void OnStart(string[] args)
         {
-            WriteToFile("Service started at " + DateTime.Now.ToString());
-            discord = new Discord.Discord(Int64.Parse(CLIENT_ID), (UInt64)Discord.CreateFlags.NoRequireDiscord);
-            activity = new Discord.Activity
-            {
-                //https://discord.com/developers/docs/game-sdk/activities
-                //https://discord.com/developers/applications/1115004659384471714/rich-presence/visualizer
-                Name = "Work",
-                State = "Hardly working",
-                Details = "Hard at work",
-                Timestamps =
-                {
-                    End = 1702643400,
-                },
-                Assets =
-                {
-                    LargeImage = "jim-carrey-typing-2400596192", // Larger Image Asset Value
-                    LargeText = "Work", // Large Image Tooltip
-                    SmallImage = "certified", // Small Image Asset Value
-                    SmallText = "Certified Hard Worker", // Small Image Tooltip
-                },
-            };
-
+            //System.Diagnostics.Debugger.Launch();
+            WriteToLog("Service started at " + DateTime.Now.ToString());
+            ReadConfig();
 
             discord.SetLogHook(Discord.LogLevel.Debug, (level, message) =>
             {
-                WriteToFile("Log[{0}] {1} " + level + message);
+                WriteToLog("Log[{0}] {1} " + level + message);
             });
 
             discord.RunCallbacks();
@@ -101,7 +168,7 @@ namespace CustomRPC_Service
 
         protected override void OnStop()
         {
-            WriteToFile("Service stopped at " + DateTime.Now.ToString());
+            WriteToLog("Service stopped at " + DateTime.Now.ToString());
             discord.RunCallbacks();
             discord.Dispose();
         }
@@ -182,7 +249,10 @@ namespace CustomRPC_Service
 
         static void UpdateActivity(Discord.Discord discord, Discord.Activity activity)
         {
-            activity.Timestamps.End = GetEndTime();
+            if (activity.Timestamps.End == 1)
+            {
+                activity.Timestamps.End = GetEndTime();
+            }
             var activityManager = discord.GetActivityManager();
             activityManager.UpdateActivity(activity, (result) =>
             {
